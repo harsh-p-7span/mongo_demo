@@ -1,0 +1,31 @@
+name: First pipeline
+
+on:
+    push:
+        branches: ["master"]
+    pull_request:
+        branches: ["master"]
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+
+        services:
+            mongodb:
+                image: mongo:4.4
+                env:
+                    MONGO_INITDB_ROOT_USERNAME: root
+                    MONGO_INITDB_ROOT_PASSWORD: root
+                ports:
+                    - 27017:27017
+
+        steps:
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "18"
+
+            - uses: actions/checkout@v3
+
+            - name: Install Dependencies
+              run: npm install
